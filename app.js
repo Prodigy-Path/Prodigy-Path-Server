@@ -8,6 +8,15 @@ const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
 
+const dynamoose = require('dynamoose');
+dynamoose.AWS.config.update({
+  region: 'us-east-2',
+  accessKeyId: 'YOUR_ACCESS_KEY_ID',
+  secretAccessKey: 'YOUR_SECRET_ACCESS_KEY',
+});
+
+
+
 app.get('/', (req, res, next) => {
   res.send('Proof Of Life4');
 });

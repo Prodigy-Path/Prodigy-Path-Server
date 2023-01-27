@@ -1,5 +1,10 @@
 /** @format */
+
 const dynamoose = require('dynamoose');
+
+
+
+
 const userSchema = new dynamoose.Schema({
   _id: {
     type: String,
