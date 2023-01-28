@@ -1,6 +1,6 @@
 /** @format */
 
-const Post = require('../models/Posts');
+const Post = require('../models/posts');
 
 async function createPost(req, res, next) {
   try {

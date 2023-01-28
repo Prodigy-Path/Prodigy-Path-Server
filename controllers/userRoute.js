@@ -1,6 +1,6 @@
 /** @format */
 
-const User = require('../models/User');
+const User = require('../models/user');
 
 async function signUp(req, res, next) {
   try {

@@ -1,3 +1,5 @@
+/** @format */
+
 const dynamoose = require('dynamoose');
 
 const taskSchema = new dynamoose.Schema({
@@ -23,13 +25,16 @@ const taskSchema = new dynamoose.Schema({
     ref: 'Prod-User',
   },
   /*  NEED TO FIX TAGS AS WELL AS COMP DATE, GETTING INVALID INPUT IN RESPONSE */
-  // completion_date: {
-  //   type: Date,
-  // },
-  // tags: [{
-  //   type: String,
-  //   ref: 'Tag',
-  // }],
+  completion_date: {
+    type: Date,
+    default: null,
+    required: false,
+    allowNull: true,
+  },
+  tags: {
+    type: Array,
+    schema: [String],
+  },
 });
 
 const Task = dynamoose.model('Prod-Task', taskSchema);

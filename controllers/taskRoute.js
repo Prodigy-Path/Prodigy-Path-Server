@@ -1,13 +1,15 @@
 /** @format */
 
-const Task = require('../models/Tasks');
+const Task = require('../models/tasks');
 
 async function createTask(req, res, next) {
   try {
     const data = req.body;
+    console.log(data);
     const newTask = await Task.create(data);
     res.status(201).send(newTask);
   } catch (e) {
+    console.error(e);
     next(e.message);
   }
 }
@@ -31,7 +33,6 @@ async function getOneTask(req, res, next) {
   }
 }
 
-
 async function deleteTask(req, res, next) {
   try {
     const { taskId } = req.params;
@@ -53,6 +54,4 @@ async function updateTask(req, res, next) {
   }
 }
 
-
-
-module.exports = { createTask,deleteTask, getOneTask, getTasks,  updateTask };
+module.exports = { createTask, deleteTask, getOneTask, getTasks, updateTask };

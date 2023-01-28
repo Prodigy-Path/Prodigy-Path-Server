@@ -2,7 +2,7 @@
 
 'use strict';
 
-const Users = require('../../../models/User');
+const Users = require('../../../models/user');
 const bcrypt = require('bcrypt');
 
 module.exports = async (username, password) => {

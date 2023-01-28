@@ -1,6 +1,6 @@
 /** @format */
 
-const MentorProtege = require('../models/MentorProteges');
+const MentorProtege = require('../models/mentorProteges');
 
 async function createMentorProtege(req, res, next) {
   try {

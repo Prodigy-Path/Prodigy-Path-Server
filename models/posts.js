@@ -11,11 +11,12 @@ const PostSchema = new dynamoose.Schema({
     type: String,
     required: true,
   },
-  /*  NEED TO FIX TAGS, GETTING INVALID INPUT IN RESPONSE */
-  // tags: [{
-  //   type: String,
-  //   ref: 'Tag',
-  // }],
+
+  tags: {
+    type: Array,
+    schema: [String],
+    ref: 'Tag',
+  },
   created_at: {
     type: Date,
     default: Date.now,
