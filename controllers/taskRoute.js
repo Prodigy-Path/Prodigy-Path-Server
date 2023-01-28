@@ -9,7 +9,6 @@ async function createTask(req, res, next) {
     const newTask = await Task.create(data);
     res.status(201).send(newTask);
   } catch (e) {
-    console.error(e);
     next(e.message);
   }
 }
