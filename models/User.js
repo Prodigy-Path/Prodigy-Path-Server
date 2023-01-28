@@ -16,18 +16,22 @@ const userSchema = new dynamoose.Schema({
     type: String,
     required: true,
   },
-  // email: {
-  //   type: String,
-  //   required: true,
-  //   validate: (email) =>
-  //     /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test(
-  //       email,
-  //     ),
-  // },
-  // password: {
-  //   type: String,
-  //   required: true,
-  // },
+  email: {
+    type: String,
+    required: false,
+    validate: (email) =>
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test(
+        email,
+      ),
+  },
+  token: {
+    type: String,
+    required: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
   created_at: {
     type: Date,
     default: Date.now,
@@ -37,4 +41,3 @@ const userSchema = new dynamoose.Schema({
 const User = dynamoose.model('Prod-User', userSchema);
 
 module.exports = User;
-
