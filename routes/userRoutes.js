@@ -7,9 +7,6 @@ const basic = require('../middleware/auth/basic');
 const userRouter = express.Router();
 
 userRouter.route('/signup').post(hashPassword, signUp);
-userRouter
-  .route('/login')
-  .post(basic, login)
-  .put(() => console.log('put request'))
-  .delete(() => console.log('delete'));
+userRouter.route('/login').post(basic, login);
+
 module.exports = userRouter;
