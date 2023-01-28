@@ -12,6 +12,10 @@ const userSchema = new dynamoose.Schema({
     enum: ['mentor', 'protege'],
     required: true,
   },
+  username: {
+    type: String,
+    unique: true,
+  },
   name: {
     type: String,
     required: true,
