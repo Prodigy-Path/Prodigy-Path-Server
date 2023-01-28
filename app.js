@@ -9,6 +9,9 @@ const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
 const userRouter = require('./routes/userRoutes');
+const postRouter = require('./routes/postRoutes');
+const taskRouter = require('./routes/taskRoutes');
+const mentorProtegeRouter = require('./routes/mentorProtegeRoutes');
 
 require('dotenv').config();
 
@@ -31,7 +34,10 @@ const cors = require('cors');
 app.use(express.json());
 app.use(cors());
 
+app.use(mentorProtegeRouter);
+app.use(taskRouter);
 app.use(userRouter);
+app.use(postRouter);
 
 
 
