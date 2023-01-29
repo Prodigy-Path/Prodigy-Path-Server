@@ -12,7 +12,7 @@ const startIo = (io) => {
       socket.to(roomName).emit('USER_CONNECTED', 'New user connected.');
       socket.emit('JOIN', roomName);
 
-      socket.on('GAME_STARTED', () => {
+      socket.on('CHAT_STARTING', () => {
         socket.to(roomName).emit('CHAT_STARTING', 'The chat is starting!');
       });
     });
