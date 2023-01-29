@@ -2,7 +2,7 @@
 
 'use strict';
 
-const Users = require('../../../models/User.js');
+const Users = require('../../../models/user');
 const jwt = require('jsonwebtoken');
 let SECRET;
 if (process.env.NODE_ENV === 'test') {

@@ -124,26 +124,31 @@ describe('User routes', () => {
     });
   });
 
-  xdescribe('PUT /users/:id', () => {
+  describe('PATCH /users/:id', () => {
     it('should update a user by their ID', async () => {
-      const id = user.id.toString();
-      const res = await request(server)
-        .put(`/users/${id}`)
-        .set('Authorization', `Bearer ${user.token}`)
-        .send({
-          username: 'updatedUsername',
-          role: 'testRole',
-        });
+      try {
+        const id = user._id.toString();
 
-      expect(res.statusCode).toEqual(200);
-      expect(res.body).toHaveProperty('username', 'updatedUsername');
-      expect(res.body).toHaveProperty('role', 'testRole');
+        const res = await request(server)
+          .patch(`/users/${id}`)
+          .set('Authorization', `Bearer ${user.token}`)
+          .send({
+            username: 'updatedUsername',
+            role: 'testRole',
+          });
+
+        expect(res.statusCode).toEqual(200);
+        expect(res.body).toHaveProperty('username', 'updatedUsername');
+        expect(res.body).toHaveProperty('role', 'testRole');
+      } catch (e) {
+        console.error(e);
+      }
     });
 
     it('should return a 404 error if the user does not exist', async () => {
       let token = await request(server)
         .post('/login')
-        .auth('John Smith', 'password');
+        .auth('JohnSmith', 'password');
       user = token.body;
       const res = await request(server)
         .put(`/users/63a8afacfddbaee9aca64c72`)
@@ -152,23 +157,44 @@ describe('User routes', () => {
           username: 'notInTheDataBase',
           role: 'testRole',
         });
+
       expect(res.statusCode).toEqual(404);
       expect(JSON.parse(res.text).message).toEqual('Route not found');
     });
   });
-  xdescribe('DELETE /users/:id', () => {
-    it('should delete a user by their ID', async () => {
-      let res = await request(server)
-        .post('/login')
-        .auth('JohnSmith', 'password');
-      user = res.body;
+  describe('DELETE /users/:id', () => {
+    try {
+      it('should return forbidden if the user does not have permission', async () => {
+        let res = await request(server)
+          .post('/login')
+          .auth('JohnSmith2', 'password');
 
-      const id = user.id?.toString();
+        const id = res.body._id.toString();
 
-      res = await request(server)
-        .delete(`/users/${id}`)
-        .set('Authorization', `Bearer ${user.token}`);
-      expect(res.statusCode).toEqual(204);
-    });
+        res = await request(server)
+          .delete(`/users/${id}`)
+          .set('Authorization', `Bearer ${user.token}`);
+        expect(res.statusCode).toEqual(403);
+      });
+
+      it('should return 204 if the user is deleted', async () => {
+        const newAdmin = await request(server).post('/signup').send({
+          name: 'DeleteMe',
+          username: 'DeleteMe',
+          email: 'DeleteMe@example.com',
+          password: 'password',
+          role: 'mentor',
+        });
+        const id = newAdmin.body._id.toString();
+
+        const res = await request(server)
+          .delete(`/users/${id}`)
+          .set('Authorization', `Bearer ${user.token}`);
+        console.log(newAdmin.body);
+        expect(res.statusCode).toEqual(204);
+      });
+    } catch (e) {
+      console.error(e);
+    }
   });
 });

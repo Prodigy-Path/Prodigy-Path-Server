@@ -12,6 +12,7 @@ const {
 const hashPassword = require('../middleware/auth/hashPassword');
 const basic = require('../middleware/auth/basic');
 const acl = require('../middleware/auth/acl');
+const bearer = require('../middleware/auth/bearer');
 const userRouter = express.Router();
 
 userRouter.route('/signup').post(hashPassword, signUp);
@@ -20,7 +21,7 @@ userRouter.route('/users').get(getAll);
 userRouter
   .route('/users/:_id')
   .get(getOne)
-  .patch(basic, acl('delete'), update)
-  .delete(basic, acl('delete'), destroy);
+  .patch(bearer, acl('delete'), update)
+  .delete(bearer, acl('delete'), destroy);
 
 module.exports = userRouter;

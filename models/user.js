@@ -47,8 +47,8 @@ userSchema.virtual('token').get(function () {
 
 userSchema.virtual('capabilities').get(function () {
   const acl = {
-    mentor: ['read'],
-    protege: ['read', 'create', 'update', 'delete'],
+    protege: ['read'],
+    mentor: ['read', 'create', 'update', 'delete'],
   };
   return acl[this.role];
 });

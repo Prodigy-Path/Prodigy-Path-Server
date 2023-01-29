@@ -1,20 +1,18 @@
+/** @format */
+
 'use strict';
 
 module.exports = (capability) => {
-
   return (req, res, next) => {
-
     try {
-      if (req.user.capabilities.includes(capability)) {
+      console.log(req.user);
+      if (req.user[0].capabilities.includes(capability)) {
         next();
-      }
-      else {
-        next('Access Denied');
+      } else {
+        res.status(403).send({ message: 'Access Denied' });
       }
     } catch (e) {
-      next('Invalid Login');
+      next('Access Denied');
     }
-
   };
-
 };
