@@ -6,7 +6,7 @@ const User = require('../../models/user');
 const mongoose = require('mongoose');
 
 let user;
-
+let userW;
 beforeAll(async () => {
   await connectToMongoDB();
 
@@ -17,7 +17,15 @@ beforeAll(async () => {
     password: 'password',
     role: 'mentor',
   });
+  userW = new User({
+    name: 'JohnW',
+    username: 'JohnSmithW',
+    email: 'johnsmith@example.com',
+    password: 'password',
+    role: 'protege',
+  });
   await user.save();
+  await userW.save();
 });
 
 afterAll(async () => {
@@ -149,10 +157,10 @@ describe('User routes', () => {
       let token = await request(server)
         .post('/login')
         .auth('JohnSmith', 'password');
-      user = token.body;
+      const nonUser = token.body;
       const res = await request(server)
         .put(`/users/63a8afacfddbaee9aca64c72`)
-        .set('Authorization', `Bearer ${user.token}`)
+        .set('Authorization', `Bearer ${nonUser.token}`)
         .send({
           username: 'notInTheDataBase',
           role: 'testRole',
@@ -165,20 +173,11 @@ describe('User routes', () => {
   describe('DELETE /users/:id', () => {
     try {
       it('should return forbidden if the user does not have permission', async () => {
-        const newProdigy = new User({
-          name: 'John',
-          username: 'CantDelete',
-          email: 'johnsmith@example.com',
-          password: 'password',
-          role: 'protege',
-        });
-        await newProdigy.save();
+        const _id = userW._id.toString();
 
-        const { _id } = newProdigy;
-        console.log(newProdigy);
         const res = await request(server)
           .delete(`/users/${_id}`)
-          .set('Authorization', `Bearer ${newProdigy.token}`);
+          .set('Authorization', `Bearer ${userW.token}`);
         expect(res.statusCode).toEqual(403);
       });
 
@@ -192,8 +191,7 @@ describe('User routes', () => {
         });
         await newMentor.save();
 
-        const { _id } = newMentor;
-
+        const _id = newMentor._id.toString();
         const res = await request(server)
           .delete(`/users/${_id}`)
           .set('Authorization', `Bearer ${newMentor.token}`);
