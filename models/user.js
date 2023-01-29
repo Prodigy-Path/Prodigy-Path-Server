@@ -42,7 +42,7 @@ const userSchema = new mongoose.Schema(
 );
 
 userSchema.virtual('token').get(function () {
-  return jwt.sign({ username: this.username }, 'SECRET');
+  return jwt.sign({ username: this.username }, process.env.SECRET);
 });
 
 userSchema.virtual('capabilities').get(function () {
