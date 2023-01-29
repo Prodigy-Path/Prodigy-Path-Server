@@ -14,45 +14,58 @@ async function createMentorProtege(req, res, next) {
 
 async function getMentorProteges(req, res, next) {
   try {
-    const mentorProtege = await MentorProtege.scan().exec();
-    res.status(200).send(mentorProtege);
+    const allUsers = await MentorProtege.find().all();
+    res.status(200).send(allUsers);
   } catch (e) {
-    next(e.message);
+    next(e);
   }
 }
 
 async function getOneMentorProtege(req, res, next) {
   try {
     const { mentorProtegeId } = req.params;
-    const mentorProtege = await MentorProtege.get({ _id: mentorProtegeId });
+    const mentorProtege = await MentorProtege.findOne({ _id: mentorProtegeId });
     res.status(200).send(mentorProtege);
   } catch (e) {
     next(e.message);
   }
 }
 
-
 async function deleteMentorProtege(req, res, next) {
   try {
-    const { mentorProtegeId } = req.params;
-    const deletedMentorProtege = await MentorProtege.delete({ _id: mentorProtegeId });
-    res.status(200).send(deletedMentorProtege, 'MentorProtege deleted successfully');
+    const id = req.params.mentorProtegeId;
+
+    const oneUser = await MentorProtege.findById(id);
+    if (!oneUser) res.status(404).send('Not Found!');
+    await MentorProtege.findByIdAndDelete(id);
+    res.status(204).send();
   } catch (e) {
-    next(e.message);
+    next(e);
   }
 }
 
 async function updateMentorProtege(req, res, next) {
   try {
-    const { mentorProtegeId } = req.params;
+    const id = req.params.mentorProtegeId;
+    console.log(req.body);
     const data = req.body;
-    const updatedMentorProtege = await MentorProtege.update({ _id: mentorProtegeId }, data);
-    res.status(200).send(updatedMentorProtege);
+
+    const oneUser = await MentorProtege.findById(id);
+    if (!oneUser) res.status(404).send('Not Found!');
+    const updatedItem = await MentorProtege.findByIdAndUpdate(id, data, {
+      new: true,
+      overwrite: true,
+    });
+    res.status(200).send(updatedItem);
   } catch (e) {
-    next(e.message);
+    next(e);
   }
 }
 
-
-
-module.exports = { createMentorProtege,deleteMentorProtege, getOneMentorProtege, getMentorProteges,  updateMentorProtege };
+module.exports = {
+  createMentorProtege,
+  deleteMentorProtege,
+  getOneMentorProtege,
+  getMentorProteges,
+  updateMentorProtege,
+};
