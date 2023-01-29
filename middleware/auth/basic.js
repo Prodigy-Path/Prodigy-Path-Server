@@ -9,7 +9,7 @@ module.exports = async (req, res, next) => {
   try {
 
     if (!req.headers.authorization) {
-      console.log('headers error');
+  
       return _authError();
     }
 

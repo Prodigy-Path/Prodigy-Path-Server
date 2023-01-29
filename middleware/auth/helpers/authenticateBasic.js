@@ -21,7 +21,7 @@ module.exports = async (username, password) => {
       throw new Error('Invalid User');
     }
   } catch (e) {
-    console.log(e);
+  
     throw new Error('Invalid User');
   }
 };

@@ -46,7 +46,7 @@ async function update(req, res, next) {
   try {
     const id = req.params._id;
     const data = req.body;
-    console.log(id, data);
+
     const oneUser = await User.findById(id);
     if (!oneUser) res.status(404).send('Not Found!');
     const updatedItem = await User.findByIdAndUpdate(id, data, {
@@ -62,7 +62,7 @@ async function update(req, res, next) {
 async function destroy(req, res, next) {
   try {
     const id = req.params._id;
-    console.log('delete function');
+
     const oneUser = await User.findById(id);
     if (!oneUser) res.status(404).send('Not Found!');
     await User.findByIdAndDelete(id);
