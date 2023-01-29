@@ -2,11 +2,11 @@
 
 'use strict';
 
-const Users = require('../../../models/User.js');
+const Users = require('../../../models/user');
 const jwt = require('jsonwebtoken');
 let SECRET;
 if (process.env.NODE_ENV === 'test') {
-  SECRET = 'testEnvironment';
+  SECRET = 'abcdefghikl12!';
 } else {
   SECRET = process.env.SECRET;
 }
@@ -14,12 +14,15 @@ if (process.env.NODE_ENV === 'test') {
 module.exports = async (token) => {
   try {
     const parsedToken = jwt.verify(token, SECRET);
-    const user = Users.scan({ username: parsedToken.username }).exec();
+
+    const user = await Users.find({ username: parsedToken.username });
+
     if (user) {
       return user;
     }
     throw new Error('User Not Found');
   } catch (e) {
-    throw new Error(e.message);
+    console.log(e.message);
+    throw new Error(e);
   }
 };

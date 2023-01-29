@@ -5,7 +5,7 @@ const Task = require('../models/tasks');
 async function createTask(req, res, next) {
   try {
     const data = req.body;
-    console.log(data);
+
     const newTask = await Task.create(data);
     res.status(201).send(newTask);
   } catch (e) {

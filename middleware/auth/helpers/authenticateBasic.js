@@ -7,16 +7,21 @@ const bcrypt = require('bcrypt');
 
 module.exports = async (username, password) => {
   try {
-    console.log('line10');
-    const results = await Users.scan({ username: username }).exec();
-    const user = results[0];
-    console.log(user, 'FLAG IN USER');
-    const valid = await bcrypt.compare(password, user.password);
-    if (valid) {
-      return user;
+
+    if (username && password) {
+      const results = (await Users.find({ username: username })) || [
+        { username: 'throw', password: 'error' },
+      ];
+
+      const valid = await bcrypt.compare(password, results[0]?.password);
+      if (valid) {
+        return results[0];
+      }
+    } else {
+      throw new Error('Invalid User');
     }
   } catch (e) {
-    console.log(e);
+  
     throw new Error('Invalid User');
   }
 };
