@@ -6,7 +6,6 @@ const authenticateToken = require('./helpers/authenticateToken');
 
 module.exports = async (req, res, next) => {
   try {
-    console.log('bearer');
     if (!req.headers.authorization) {
       _authError();
     }
@@ -16,6 +15,7 @@ module.exports = async (req, res, next) => {
     const validUser = await authenticateToken(token);
     req.user = validUser;
     req.token = validUser.token;
+
     next();
   } catch (e) {
     _authError();

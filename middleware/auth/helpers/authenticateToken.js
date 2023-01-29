@@ -13,8 +13,12 @@ if (process.env.NODE_ENV === 'test') {
 
 module.exports = async (token) => {
   try {
+    console.log(token, SECRET);
+    console.log(jwt.verify(token, SECRET));
     const parsedToken = jwt.verify(token, SECRET);
-    const user = Users.find({ username: parsedToken.username });
+    console.log('PARSED');
+    console.log(parsedToken);
+    const user = await Users.find({ username: parsedToken.username });
 
     if (user) {
       return user;

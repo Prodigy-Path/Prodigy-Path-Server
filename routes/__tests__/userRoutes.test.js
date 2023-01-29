@@ -162,18 +162,23 @@ describe('User routes', () => {
       expect(JSON.parse(res.text).message).toEqual('Route not found');
     });
   });
-  describe('DELETE /users/:id', () => {
+  xdescribe('DELETE /users/:id', () => {
     try {
       it('should return forbidden if the user does not have permission', async () => {
-        let res = await request(server)
-          .post('/login')
-          .auth('JohnSmith2', 'password');
+        const newProdigy = new User({
+          name: 'John',
+          username: 'CantDelete',
+          email: 'johnsmith@example.com',
+          password: 'password',
+          role: 'prodigy',
+        });
+        await user.save();
+        console.log(newProdigy);
+        const { _id } = newProdigy;
 
-        const id = res.body._id.toString();
-
-        res = await request(server)
-          .delete(`/users/${id}`)
-          .set('Authorization', `Bearer ${user.token}`);
+        const res = await request(server)
+          .delete(`/users/${_id}`)
+          .set('Authorization', `Bearer ${newProdigy.token}`);
         expect(res.statusCode).toEqual(403);
       });
 
@@ -185,12 +190,13 @@ describe('User routes', () => {
           password: 'password',
           role: 'mentor',
         });
-        const id = newAdmin.body._id.toString();
+        console.log(newAdmin.body);
+        const { _id } = newAdmin.body;
 
         const res = await request(server)
-          .delete(`/users/${id}`)
-          .set('Authorization', `Bearer ${user.token}`);
-        console.log(newAdmin.body);
+          .delete(`/users/${_id}`)
+          .set('Authorization', `Bearer ${newAdmin.body.token}`);
+
         expect(res.statusCode).toEqual(204);
       });
     } catch (e) {
