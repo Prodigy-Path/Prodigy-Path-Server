@@ -1,26 +1,32 @@
-const dynamoose = require('dynamoose');
+/** @format */
 
-const mentorProtegeSchema = new dynamoose.Schema({
-  _id: {
-    type: String,
-    hashKey: true,
-  },
-  mentor: {
-    type: String,
-    required: true,
-  },
-  protege: {
-    type: String,
-    required: true,
-  },
-  // tags: [{
-  //   type: String,
-  //   required: true,
-  // }],
-}, {
-  timestamps: true,
-});
+const mongoose = require('mongoose');
 
-const MentorProtege = dynamoose.model('Prod-MentorProtege', mentorProtegeSchema);
+const mentorProtegeSchema = new mongoose.Schema(
+  {
+    _id: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      auto: true,
+    },
+    mentor: {
+      type: String,
+      required: true,
+    },
+    protege: {
+      type: String,
+      required: true,
+    },
+    // tags: [{
+    //   type: String,
+    //   required: true,
+    // }],
+  },
+  {
+    timestamps: true,
+  },
+);
+
+const MentorProtege = mongoose.model('MentorProtege', mentorProtegeSchema);
 
 module.exports = MentorProtege;

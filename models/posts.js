@@ -1,22 +1,19 @@
 /** @format */
 
-const dynamoose = require('dynamoose');
+const mongoose = require('mongoose');
 
-const PostSchema = new dynamoose.Schema({
-  _id: {
-    type: String,
-    hashKey: true,
-  },
+const PostSchema = new mongoose.Schema({
   user: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
     required: true,
   },
-
-  tags: {
-    type: Array,
-    schema: [String],
-    ref: 'Tag',
-  },
+  tags: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Tag',
+    },
+  ],
   created_at: {
     type: Date,
     default: Date.now,
@@ -31,6 +28,6 @@ const PostSchema = new dynamoose.Schema({
   },
 });
 
-const Post = dynamoose.model('Prod-Post', PostSchema);
+const Post = mongoose.model('Post', PostSchema);
 
 module.exports = Post;

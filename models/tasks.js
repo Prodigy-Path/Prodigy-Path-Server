@@ -1,11 +1,12 @@
 /** @format */
 
-const dynamoose = require('dynamoose');
+const mongoose = require('mongoose');
 
-const taskSchema = new dynamoose.Schema({
+const taskSchema = new mongoose.Schema({
   _id: {
-    type: String,
-    hashKey: true,
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    auto: true,
   },
   title: {
     type: String,
@@ -15,28 +16,28 @@ const taskSchema = new dynamoose.Schema({
     type: String,
   },
   assigned_by: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
     required: true,
-    ref: 'Prod-User',
   },
   assigned_to: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
     required: true,
-    ref: 'Prod-User',
   },
-  /*  NEED TO FIX TAGS AS WELL AS COMP DATE, GETTING INVALID INPUT IN RESPONSE */
   completion_date: {
     type: Date,
     default: null,
     required: false,
     allowNull: true,
   },
-  tags: {
-    type: Array,
-    schema: [String],
-  },
+  tags: [
+    {
+      type: String,
+    },
+  ],
 });
 
-const Task = dynamoose.model('Prod-Task', taskSchema);
+const Task = mongoose.model('Task', taskSchema);
 
 module.exports = Task;
