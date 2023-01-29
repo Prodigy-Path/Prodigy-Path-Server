@@ -60,7 +60,7 @@ describe('PUT /posts/:postId', () => {
     const posts = await request(server).get('/posts');
 
     const postId = posts.body[0]._id;
-    console.log(posts.body[0]);
+
     const res = await request(server).put(`/posts/${postId}`).send({
       title: 'Updated Test Title',
       text: 'Updated Test Body',

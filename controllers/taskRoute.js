@@ -15,7 +15,7 @@ async function createTask(req, res, next) {
 
 async function getTasks(req, res, next) {
   try {
-    const tasks = await Task.scan().exec();
+    const tasks = await Task.find().all();
     res.status(200).send(tasks);
   } catch (e) {
     next(e.message);
@@ -25,7 +25,7 @@ async function getTasks(req, res, next) {
 async function getOneTask(req, res, next) {
   try {
     const { taskId } = req.params;
-    const task = await Task.get({ _id: taskId });
+    const task = await Task.findById(taskId);
     res.status(200).send(task);
   } catch (e) {
     next(e.message);
@@ -35,8 +35,8 @@ async function getOneTask(req, res, next) {
 async function deleteTask(req, res, next) {
   try {
     const { taskId } = req.params;
-    const deletedTask = await Task.delete({ _id: taskId });
-    res.status(200).send(deletedTask, 'Task deleted successfully');
+    await Task.findByIdAndDelete(taskId);
+    res.status(204).end();
   } catch (e) {
     next(e.message);
   }
@@ -46,7 +46,11 @@ async function updateTask(req, res, next) {
   try {
     const { taskId } = req.params;
     const data = req.body;
-    const updatedTask = await Task.update({ _id: taskId }, data);
+    const updatedTask = await Task.findByIdAndUpdate(taskId, data, {
+      new: true,
+      overwrite: true,
+    });
+
     res.status(200).send(updatedTask);
   } catch (e) {
     next(e.message);
