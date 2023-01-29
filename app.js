@@ -15,6 +15,7 @@ const taskRouter = require('./routes/taskRoutes');
 const mentorProtegeRouter = require('./routes/mentorProtegeRoutes');
 
 const cors = require('cors');
+const startIo = require('./socket/server');
 
 let DATABASE_URL;
 if (process.env.NODE_ENV === 'test') {
@@ -45,7 +46,7 @@ app.use(mentorProtegeRouter);
 app.use(taskRouter);
 app.use(userRouter);
 app.use(postRouter);
-
+startIo(io);
 app.all('/', (req, res, next) => {
   res.send('Proof Of Life4');
 });
