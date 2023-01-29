@@ -64,4 +64,6 @@ const start = () => {
 module.exports = {
   io,
   start,
+  connectToMongoDB,
+  server,
 };

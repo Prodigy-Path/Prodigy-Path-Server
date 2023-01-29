@@ -14,7 +14,8 @@ if (process.env.NODE_ENV === 'test') {
 module.exports = async (token) => {
   try {
     const parsedToken = jwt.verify(token, SECRET);
-    const user = Users.scan({ username: parsedToken.username }).exec();
+    const user = Users.find({ username: parsedToken.username });
+
     if (user) {
       return user;
     }
