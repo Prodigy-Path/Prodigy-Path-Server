@@ -9,6 +9,10 @@ const userSchema = new mongoose.Schema(
       enum: ['mentor', 'protege'],
       required: true,
     },
+    tags: {
+      type: [String],
+      default: [],
+    },
     username: {
       type: String,
       unique: true,

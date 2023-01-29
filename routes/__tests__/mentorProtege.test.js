@@ -85,7 +85,7 @@ describe('User routes', () => {
 
   describe('PATCH /mentorproteges/:id', () => {
     it('should update a mentorProtege by their ID', async () => {
-      console.log(mentorProtege._id);
+    
       const res = await request(server)
         .patch(`/mentorproteges/${mentorProtege._id}`)
         .send({

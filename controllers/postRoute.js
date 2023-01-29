@@ -5,38 +5,42 @@ const Post = require('../models/posts');
 async function createPost(req, res, next) {
   try {
     const data = req.body;
+
     const newPost = await Post.create(data);
+    console.log(newPost);
     res.status(201).send(newPost);
   } catch (e) {
+    console.error(e.message);
     next(e.message);
   }
 }
 
 async function getPosts(req, res, next) {
   try {
-    const posts = await Post.scan().exec();
+    const posts = await Post.find().all();
     res.status(200).send(posts);
   } catch (e) {
-    next(e.message);
+    console.error(e.message);
+    next(e);
   }
 }
 
 async function getOnePost(req, res, next) {
   try {
     const { postId } = req.params;
-    const post = await Post.get({ _id: postId });
+    const post = await Post.find({ _id: postId });
     res.status(200).send(post);
   } catch (e) {
-    next(e.message);
+    console.error(e.message);
+    next(e);
   }
 }
-
 
 async function deletePost(req, res, next) {
   try {
     const { postId } = req.params;
-    const deletedPost = await Post.delete({ _id: postId });
-    res.status(200).send(deletedPost, 'Post deleted successfully');
+    await Post.findByIdAndDelete(postId);
+    res.status(204).end();
   } catch (e) {
     next(e.message);
   }
@@ -45,14 +49,19 @@ async function deletePost(req, res, next) {
 async function updatePost(req, res, next) {
   try {
     const { postId } = req.params;
+
     const data = req.body;
-    const updatedPost = await Post.update({ _id: postId }, data);
-    res.status(200).send(updatedPost);
+
+    const updatedPost = await Post.findById(postId);
+    if (!updatedPost) res.status(404).send('Not Found!');
+    const updatedItem = await Post.findByIdAndUpdate(postId, data, {
+      new: true,
+      overwrite: true,
+    });
+    res.status(200).send(updatedItem);
   } catch (e) {
-    next(e.message);
+    next(e);
   }
 }
 
-
-
-module.exports = { createPost,deletePost, getOnePost, getPosts,  updatePost };
+module.exports = { createPost, deletePost, getOnePost, getPosts, updatePost };
