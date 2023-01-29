@@ -5,8 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "watch": "nodemon index.js",
+    "test-watch": "NODE_ENV=test jest --verbose --coverage --watchAll",
+    "test": "NODE_ENV=test jest --verbose --coverage --detectOpenHandles",
+    "lint": "eslint **/*.js"
   },
   "repository": {
     "type": "git",
