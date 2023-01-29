@@ -29,6 +29,23 @@ const startIo = (io) => {
 
       socket.emit('ROOMS', availableRooms);
     });
+
+    socket.on('LEAVE', payload => {
+      const { username, room } = users[socket.id];
+      socket.leave(room);
+      socket.to(room).emit('NEW_LEAVE', `${username} has left the room`);
+    });
+
+    socket.on('MESSAGE', payload => { //payload = {content: string}
+      const { username, room } = users[socket.id];
+      console.log(' ~ username', username);
+      payload.username = username;
+      socket.to(room).emit('MESSAGE', payload);
+  
+      const dt = dtf.format(new Date());
+      payload.received = `Message received by server at ${dt}`;
+      socket.emit('RECEIVED', payload);
+    });
   });
 };
 
