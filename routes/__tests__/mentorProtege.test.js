@@ -5,26 +5,26 @@ const { server, connectToMongoDB } = require('../../app');
 const MentorProtege = require('../../models/mentorProteges');
 const mongoose = require('mongoose');
 
-let mentorProtege;
+describe('mentor routes', () => {
+  let mentorProtege;
 
-beforeAll(async () => {
-  await connectToMongoDB();
+  beforeAll(async () => {
+    await connectToMongoDB();
 
-  mentorProtege = new MentorProtege({
-    mentor: 'mentorID',
-    protege: 'protegeID',
-    tags: ['JavaScript', 'C++'],
+    mentorProtege = new MentorProtege({
+      mentor: 'mentorID',
+      protege: 'protegeID',
+      tags: ['JavaScript', 'C++'],
+    });
+
+    await mentorProtege.save();
   });
 
-  await mentorProtege.save();
-});
+  afterAll(async () => {
+    await MentorProtege.collection.drop();
+    await mongoose.connection.close();
+  });
 
-afterAll(async () => {
-  await MentorProtege.collection.drop();
-  await mongoose.connection.close();
-});
-
-describe('User routes', () => {
   describe('POST /mentorproteges', () => {
     it('should create a new mentorProtege', async () => {
       const res = await request(server)
@@ -85,7 +85,6 @@ describe('User routes', () => {
 
   describe('PATCH /mentorproteges/:id', () => {
     it('should update a mentorProtege by their ID', async () => {
-    
       const res = await request(server)
         .patch(`/mentorproteges/${mentorProtege._id}`)
         .send({
