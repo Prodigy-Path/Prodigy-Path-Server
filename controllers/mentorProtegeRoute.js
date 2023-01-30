@@ -47,7 +47,7 @@ async function deleteMentorProtege(req, res, next) {
 async function updateMentorProtege(req, res, next) {
   try {
     const id = req.params.mentorProtegeId;
-    console.log(req.body);
+   
     const data = req.body;
 
     const oneUser = await MentorProtege.findById(id);

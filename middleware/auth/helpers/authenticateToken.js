@@ -17,12 +17,8 @@ module.exports = async (token) => {
 
     const user = await Users.find({ username: parsedToken.username });
 
-    if (user) {
-      return user;
-    }
-    throw new Error('User Not Found');
+    return user;
   } catch (e) {
-    console.log(e.message);
     throw new Error(e);
   }
 };

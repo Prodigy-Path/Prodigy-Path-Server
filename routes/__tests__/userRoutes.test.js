@@ -55,7 +55,7 @@ describe('User routes', () => {
         role: 'mentor',
       });
 
-      expect(res.statusCode).toEqual(500);
+      expect(res.statusCode).toEqual(400);
     });
 
     it('should return a 404 error if the path is not /signup', async () => {
@@ -89,6 +89,13 @@ describe('User routes', () => {
       const res = await request(server)
         .post('/login')
         .auth('nonexistentuser', 'password');
+      expect(res.statusCode).toEqual(403);
+      expect(res.text).toEqual('Invalid Login');
+    });
+
+    it('should return a 500 error if the user does not exist', async () => {
+      const res = await request(server).post('/login');
+
       expect(res.statusCode).toEqual(403);
       expect(res.text).toEqual('Invalid Login');
     });
@@ -153,6 +160,20 @@ describe('User routes', () => {
       }
     });
 
+    it('should throw a 500 error if no headers are attached', async () => {
+      let res;
+      try {
+        const id = user._id.toString();
+
+        res = await request(server).patch(`/users/${id}`).send({
+          username: 'updatedUsername',
+          role: 'testRole',
+        });
+      } catch (e) {
+        expect(res.statusCode).toEqual(500);
+      }
+    });
+
     it('should return a 404 error if the user does not exist', async () => {
       let token = await request(server)
         .post('/login')
@@ -179,6 +200,18 @@ describe('User routes', () => {
           .delete(`/users/${_id}`)
           .set('Authorization', `Bearer ${userW.token}`);
         expect(res.statusCode).toEqual(403);
+      });
+
+      it('should throw a 500 error if the token is invalid', async () => {
+        const _id = userW._id.toString();
+
+        const res = await request(server)
+          .delete(`/users/${_id}`)
+          .set(
+            'Authorization',
+            `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpJ9.eyJ1c2VybmFtZSI6IkpvaG5TbWl0aDciLCJpYXQiOjE2NzUwMzQ2MjR9.qh-0h9Nkp1wx8ImVfk63kGcftJ3BHEHVKHQk-C3s0vM`,
+          );
+        expect(res.statusCode).toEqual(500);
       });
 
       it('should return 204 if the user is deleted', async () => {

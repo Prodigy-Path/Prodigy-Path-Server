@@ -13,9 +13,16 @@ const hashPassword = require('../middleware/auth/hashPassword');
 const basic = require('../middleware/auth/basic');
 const acl = require('../middleware/auth/acl');
 const bearer = require('../middleware/auth/bearer');
+const checkRequiredFields = require('../middleware/errorHandlers/signup');
 const userRouter = express.Router();
 
-userRouter.route('/signup').post(hashPassword, signUp);
+userRouter
+  .route('/signup')
+  .post(
+    checkRequiredFields(['name', 'username', 'password', 'role']),
+    hashPassword,
+    signUp,
+  );
 userRouter.route('/login').post(basic, login);
 userRouter.route('/users').get(getAll);
 userRouter

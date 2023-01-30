@@ -8,12 +8,7 @@ const PostSchema = new mongoose.Schema({
     ref: 'User',
     required: true,
   },
-  tags: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Tag',
-    },
-  ],
+
   created_at: {
     type: Date,
     default: Date.now,

@@ -7,7 +7,6 @@ const bcrypt = require('bcrypt');
 
 module.exports = async (username, password) => {
   try {
-
     if (username && password) {
       const results = (await Users.find({ username: username })) || [
         { username: 'throw', password: 'error' },
@@ -17,11 +16,8 @@ module.exports = async (username, password) => {
       if (valid) {
         return results[0];
       }
-    } else {
-      throw new Error('Invalid User');
     }
   } catch (e) {
-  
     throw new Error('Invalid User');
   }
 };
