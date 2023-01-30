@@ -5,35 +5,35 @@ const { server, connectToMongoDB } = require('../../app');
 const User = require('../../models/user');
 const mongoose = require('mongoose');
 
-let user;
-let userW;
-beforeAll(async () => {
-  await connectToMongoDB();
-
-  user = new User({
-    name: 'John',
-    username: 'JohnSmith',
-    email: 'johnsmith@example.com',
-    password: 'password',
-    role: 'mentor',
-  });
-  userW = new User({
-    name: 'JohnW',
-    username: 'JohnSmithW',
-    email: 'johnsmith@example.com',
-    password: 'password',
-    role: 'protege',
-  });
-  await user.save();
-  await userW.save();
-});
-
-afterAll(async () => {
-  await User.collection.drop();
-  await mongoose.connection.close();
-});
-
 describe('User routes', () => {
+  let user;
+  let userW;
+  beforeAll(async () => {
+    await connectToMongoDB();
+
+    user = new User({
+      name: 'John',
+      username: 'JohnSmith',
+      email: 'johnsmith@example.com',
+      password: 'password',
+      role: 'mentor',
+    });
+    userW = new User({
+      name: 'JohnW',
+      username: 'JohnSmithW',
+      email: 'johnsmith@example.com',
+      password: 'password',
+      role: 'protege',
+    });
+    await user.save();
+    await userW.save();
+  });
+
+  afterAll(async () => {
+    await User.collection.drop();
+    await mongoose.connection.close();
+  });
+
   describe('POST /signup', () => {
     it('should create a new user', async () => {
       const res = await request(server).post('/signup').send({
@@ -52,6 +52,17 @@ describe('User routes', () => {
     it('should return a 500 error if there is a database validation error', async () => {
       const res = await request(server).post('/signup').send({
         password: 'password',
+        role: 'mentor',
+      });
+
+      expect(res.statusCode).toEqual(400);
+    });
+
+    it('should return an error if there is no password', async () => {
+      const res = await request(server).post('/signup').send({
+        name: 'John',
+        username: 'JohnSmith9',
+        email: 'johnsmith@example.com',
         role: 'mentor',
       });
 

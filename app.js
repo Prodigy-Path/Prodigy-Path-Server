@@ -62,6 +62,7 @@ const start = () => {
 };
 
 module.exports = {
+  startIo,
   io,
   start,
   connectToMongoDB,
