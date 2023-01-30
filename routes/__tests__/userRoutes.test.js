@@ -58,6 +58,17 @@ describe('User routes', () => {
       expect(res.statusCode).toEqual(400);
     });
 
+    it('should return an error if there is no password', async () => {
+      const res = await request(server).post('/signup').send({
+        name: 'John',
+        username: 'JohnSmith9',
+        email: 'johnsmith@example.com',
+        role: 'mentor',
+      });
+
+      expect(res.statusCode).toEqual(400);
+    });
+
     it('should return a 404 error if the path is not /signup', async () => {
       const res = await request(server).post('/sign').send({
         password: 'password',

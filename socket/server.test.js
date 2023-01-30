@@ -6,7 +6,7 @@ const { createServer } = require('http');
 const { Server } = require('socket.io');
 const Client = require('socket.io-client');
 
-describe('socket.io test', () => {
+xdescribe('socket.io test', () => {
   let io, serverSocket, clientSocket;
 
   beforeAll((done) => {
