@@ -16,7 +16,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-       - name: npm install script and test scripts
+      - name: npm install script and test scripts
         env:
           CI: true
           SECRET: ${{ secrets.SECRET }}
