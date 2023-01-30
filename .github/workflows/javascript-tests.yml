@@ -16,9 +16,12 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - name: npm install and run postinstall script and test
+       - name: npm install script and test scripts
         env:
           CI: true
-
+          SECRET: ${{ secrets.SECRET }}
+          DATABASE_URL_LIVE: ${{ secrets.DATABASE_URL_LIVE }}
+          DATABASE_URL_TEST: ${{ secrets.DATABASE_URL_TEST }}
         run: |
           npm i
+          npm test
