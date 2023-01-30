@@ -8,7 +8,7 @@ async function signUp(req, res, next) {
     const newUser = await User.create(data);
     res.status(201).send(newUser);
   } catch (e) {
-    next({ error: e.message });
+    next(e);
   }
 }
 
@@ -62,7 +62,7 @@ async function update(req, res, next) {
 async function destroy(req, res, next) {
   try {
     const id = req.params._id;
-  
+
     const oneUser = await User.findById(id);
     if (!oneUser) res.status(404).send('Not Found!');
     await User.findByIdAndDelete(id);

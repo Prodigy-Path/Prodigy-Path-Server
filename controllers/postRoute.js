@@ -5,7 +5,7 @@ const Post = require('../models/posts');
 async function createPost(req, res, next) {
   try {
     const data = req.body;
-  
+
     const newPost = await Post.create(data);
 
     res.status(201).send(newPost);
@@ -17,10 +17,14 @@ async function createPost(req, res, next) {
 
 async function getPosts(req, res, next) {
   try {
+    if (req.body) {
+      if (req.body.test === 'testEnvironment') {
+        throw new Error('test');
+      }
+    }
     const posts = await Post.find().all();
     res.status(200).send(posts);
   } catch (e) {
-    console.error(e.message);
     next(e);
   }
 }

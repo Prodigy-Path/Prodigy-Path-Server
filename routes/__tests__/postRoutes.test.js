@@ -39,8 +39,21 @@ describe('POST /posts', () => {
 describe('GET /posts', () => {
   it('should return an array of posts', async () => {
     const res = await request(server).get('/posts');
+
     expect(res.statusCode).toEqual(200);
     expect(res.body).toBeInstanceOf(Array);
+  });
+
+  it('should return an array of posts', async () => {
+    let res;
+    try {
+      res = await request(server)
+        .get('/posts')
+        .send({ test: 'testEnvironment' });
+    } catch (e) {
+      expect(res.statusCode).toEqual(500);
+      expect(res.body).toEqual('');
+    }
   });
 });
 

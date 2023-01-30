@@ -55,7 +55,7 @@ describe('User routes', () => {
         role: 'mentor',
       });
 
-      expect(res.statusCode).toEqual(500);
+      expect(res.statusCode).toEqual(400);
     });
 
     it('should return a 404 error if the path is not /signup', async () => {
