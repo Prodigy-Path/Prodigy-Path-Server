@@ -1,5 +1,3 @@
-/** @format */
-
 const startIo = (io) => {
   io.on('connection', (socket) => {
     console.log('IO server connection');
@@ -7,13 +5,19 @@ const startIo = (io) => {
     socket.emit('proofOfLife', 'This is the proof of life');
 
     socket.on('JOIN', (roomName) => {
+      console.log(roomName);
       socket.join(roomName);
       console.log(`Joined room: ${roomName}`);
       socket.to(roomName).emit('USER_CONNECTED', 'New user connected.');
-      socket.emit('JOIN', roomName);
 
-      socket.on('CHAT_STARTING', () => {
-        socket.to(roomName).emit('CHAT_STARTING', 'The chat is starting!');
+
+      // socket.on('CHAT_STARTING', () => {
+      //   socket.to(roomName).emit('CHAT_STARTING', 'The chat is starting!');
+      // });
+
+      socket.on('SEND_MESSAGE', (text ) => {
+        console.log('test', text, roomName);
+        socket.to(roomName).emit('RECEIVE_MESSAGE', text);
       });
     });
 

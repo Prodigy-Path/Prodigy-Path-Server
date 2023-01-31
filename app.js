@@ -8,7 +8,11 @@ require('dotenv').config();
 const socketio = require('socket.io');
 const app = express();
 const server = http.createServer(app);
-const io = socketio(server);
+const io = socketio(server, {
+  cors: {
+    origin: ['http://localhost:3000','http://localhost:3001'],
+  },
+});
 const userRouter = require('./routes/userRoutes');
 const postRouter = require('./routes/postRoutes');
 const taskRouter = require('./routes/taskRoutes');
@@ -46,7 +50,9 @@ app.use(mentorProtegeRouter);
 app.use(taskRouter);
 app.use(userRouter);
 app.use(postRouter);
+
 startIo(io);
+
 app.all('/', (req, res, next) => {
   res.send('Proof Of Life4');
 });
