@@ -15,11 +15,23 @@ const startIo = (io) => {
       //   socket.to(roomName).emit('CHAT_STARTING', 'The chat is starting!');
       // });
 
-      socket.on('SEND_MESSAGE', (text ) => {
+      socket.on('SEND_MESSAGE', (text, id ) => {
         console.log('test', text, roomName);
-        socket.to(roomName).emit('RECEIVE_MESSAGE', text);
+        let payload = {
+          text: text,
+          id: id,
+        };
+        socket.to(roomName).emit('RECEIVE_MESSAGE', payload);
       });
+
+      socket.on('LEAVE_ROOM', (text) => {
+        console.log(`Leaving room: ${text}`);
+        socket.leave(text);
+        socket.to(text).emit('USER_DISCONNECTED', 'User disconnected from room.');
+      });
+      
     });
+
 
     socket.on('GET_ROOMS', () => {
       let availableRooms = [];
