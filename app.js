@@ -10,7 +10,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketio(server, {
   cors: {
-    origin: ['http://localhost:3000','http://localhost:3001'],
+    origin: ['http://localhost:3000','http://localhost:3001','https://prodigy-path.netlify.app' ],
   },
 });
 const userRouter = require('./routes/userRoutes');
