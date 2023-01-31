@@ -28,7 +28,7 @@ userRouter.route('/users').get(getAll);
 userRouter
   .route('/users/:_id')
   .get(getOne)
-  .patch(bearer, acl('delete'), update)
+  .patch(bearer, update)
   .delete(bearer, acl('delete'), destroy);
 
 module.exports = userRouter;
