@@ -21,6 +21,10 @@ const PostSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  userName: {
+    type: String,
+    required: true
+  }
 });
 
 const Post = mongoose.model('Post', PostSchema);
