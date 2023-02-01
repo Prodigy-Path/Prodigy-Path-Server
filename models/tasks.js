@@ -3,7 +3,6 @@
 const mongoose = require('mongoose');
 
 const taskSchema = new mongoose.Schema({
- 
   title: {
     type: String,
     required: true,
@@ -12,13 +11,11 @@ const taskSchema = new mongoose.Schema({
     type: String,
   },
   assigned_by: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+    type: String,
     required: true,
   },
   assigned_to: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+    type: String,
     required: true,
   },
   completion_date: {
