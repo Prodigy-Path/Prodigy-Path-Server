@@ -18,7 +18,7 @@ async function getTasks(req, res, next) {
     const tasks = await Task.find().all();
     res.status(200).send(tasks);
   } catch (e) {
-    next(e.message);
+    next(e);
   }
 }
 
@@ -28,7 +28,7 @@ async function getOneTask(req, res, next) {
     const task = await Task.findById(taskId);
     res.status(200).send(task);
   } catch (e) {
-    next(e.message);
+    next(e);
   }
 }
 
@@ -38,7 +38,7 @@ async function deleteTask(req, res, next) {
     await Task.findByIdAndDelete(taskId);
     res.status(204).end();
   } catch (e) {
-    next(e.message);
+    next(e);
   }
 }
 
@@ -53,7 +53,7 @@ async function updateTask(req, res, next) {
 
     res.status(200).send(updatedTask);
   } catch (e) {
-    next(e.message);
+    next(e);
   }
 }
 

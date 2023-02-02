@@ -11,7 +11,7 @@ async function createPost(req, res, next) {
     res.status(201).send(newPost);
   } catch (e) {
     console.error(e.message);
-    next(e.message);
+    next(e);
   }
 }
 
@@ -46,7 +46,7 @@ async function deletePost(req, res, next) {
     await Post.findByIdAndDelete(postId);
     res.status(204).end();
   } catch (e) {
-    next(e.message);
+    next(e);
   }
 }
 
