@@ -21,6 +21,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    description: {
+      type: String,
+      required: false,
+    },
     connection_requests: {
       type: [String],
       default: [],
