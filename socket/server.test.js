@@ -62,4 +62,31 @@ describe('socket.io test', () => {
       done();
     });
   });
+  test('should leave room and emit USER_DISCONNECTED event', (done) => {
+    clientSocket.emit('JOIN', 'room1');
+    clientSocket.on('USER_DISCONNECTED', (arg) => {
+      expect(arg).toBe('User disconnected.');
+      done();
+    });
+    clientSocket.emit('LEAVE_ROOM', 'room1');
+    serverSocket.emit('USER_DISCONNECTED', 'User disconnected.');
+  });
+
+  test('should receive message and emit RECEIVE_MESSAGE event', (done) => {
+    clientSocket.emit('JOIN', 'room1');
+    clientSocket.on('RECEIVE_MESSAGE', (arg) => {
+      expect(arg).toEqual('Hello, world!');
+      done();
+    });
+    serverSocket.emit('RECEIVE_MESSAGE', 'Hello, world!', 123, 'room1');
+  });
+
+  test('should receive message and emit SEND_MESSAGE event', (done) => {
+    clientSocket.emit('JOIN', 'room1');
+    clientSocket.on('SEND_MESSAGE', (arg) => {
+      expect(arg).toEqual('Hello, world!');
+      done();
+    });
+    serverSocket.emit('SEND_MESSAGE', 'Hello, world!', 123, 'room1');
+  });
 });
