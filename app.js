@@ -17,6 +17,8 @@ const userRouter = require('./routes/userRoutes');
 const postRouter = require('./routes/postRoutes');
 const taskRouter = require('./routes/taskRoutes');
 const mentorProtegeRouter = require('./routes/mentorProtegeRoutes');
+// const messageRouter = require('./routes/messageRoutes');
+
 
 const cors = require('cors');
 const startIo = require('./socket/server');
@@ -50,6 +52,7 @@ app.use(mentorProtegeRouter);
 app.use(taskRouter);
 app.use(userRouter);
 app.use(postRouter);
+// app.use(messageRouter);
 
 startIo(io);
 
