@@ -3,10 +3,10 @@ const startIo = (io) => {
 
   setInterval(() => {
     sockets = [];
-  }, 300000);
+  }, 500000);
 
   io.on('connection', (socket) => {
-    console.log('IO server connection');    
+    console.log('IO server connection');
     socket.on('JOIN', (roomName) => {
       console.log(roomName);
       socket.join(roomName);
